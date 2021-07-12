@@ -4,7 +4,7 @@ FSJS Project 2 - Data Pagination and Filtering
 */
 
 // Array of student objects
-export const data = [
+const data = [
   {
     name: {
       title: "Miss",
