@@ -14,15 +14,15 @@ const header = document.querySelector(".header");
 const studentList = document.querySelector(".student-list");
 const linkList = document.querySelector(".link-list");
 
-const showPage = (page) => {
+const showPage = (list, page) => {
   studentItems.currentPage = page;
   studentList.innerHTML = "";
   let startIndex =
     (studentItems.currentPage - 1) * studentItems.studentsPerPage;
   let endIndex;
 
-  if (startIndex + studentItems.studentsPerPage > data.length) {
-    endIndex = data.length;
+  if (startIndex + studentItems.studentsPerPage > list.length) {
+    endIndex = list.length;
   } else {
     endIndex = startIndex + studentItems.studentsPerPage;
   }
@@ -44,7 +44,7 @@ const showPage = (page) => {
     let dateSpan = document.createElement("span");
     dateSpan.classList.add("date");
 
-    let studentData = data[x];
+    let studentData = list[x];
     let student = {
       studentImg: studentData.picture.large,
       studentName: studentData.name,
@@ -84,7 +84,7 @@ const addPagination = () => {
     button.type = "button";
     button.textContent = x + 1;
     button.addEventListener("click", function () {
-      showPage(x + 1);
+      showPage(data, x + 1);
     });
     x + 1 === studentItems.currentPage
       ? button.classList.add("active")
@@ -120,4 +120,4 @@ studentSearch.addEventListener("click", searchStudents);
 
 // Call functions
 
-showPage(studentItems.currentPage);
+showPage(data, studentItems.currentPage);
