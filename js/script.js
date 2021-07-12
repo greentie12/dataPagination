@@ -89,17 +89,14 @@ const addPagination = () => {
     x + 1 === studentItems.currentPage
       ? button.classList.add("active")
       : button.classList.remove("active");
-    // if (x + 1 === studentItems.currentPage) {
-    //   button.classList.add("active");
-    // }
 
     li.appendChild(button);
     linkList.appendChild(li);
   }
 };
 
+// search function
 const searchStudents = () => {
-  search.textContent = "";
   let txtValue;
   let h3 = document.querySelectorAll("h3");
   let filter = search.value.toUpperCase();
