@@ -7,6 +7,10 @@ const studentItems = {
   currentPage: 1,
 };
 
+const studentSearch = document.querySelector(".student-search");
+const searchSpan = document.querySelector(".student-search span");
+const search = document.querySelector("#search");
+const header = document.querySelector(".header");
 const studentList = document.querySelector(".student-list");
 const linkList = document.querySelector(".link-list");
 
@@ -49,13 +53,13 @@ const showPage = (page) => {
     };
 
     img.src = student.studentImg;
-    h3.innerHTML = `${student.studentName.first} ${student.studentName.last} `;
-    emailSpan.innerHTML = student.studentEmail;
+    h3.textContent = `${student.studentName.first} ${student.studentName.last} `;
+    emailSpan.textContent = student.studentEmail;
     detailsDiv.appendChild(img);
     detailsDiv.appendChild(h3);
     detailsDiv.appendChild(emailSpan);
 
-    dateSpan.innerHTML = student.studentJoined;
+    dateSpan.textContent = student.studentJoined;
     joinedDiv.appendChild(dateSpan);
 
     li.appendChild(detailsDiv);
@@ -63,14 +67,14 @@ const showPage = (page) => {
     studentList.appendChild(li);
   }
 
-  showButtons();
+  addPagination();
 };
 
 /*
 Create the `addPagination` function
 This function will create and insert/append the elements needed for the pagination buttons
 */
-const showButtons = () => {
+const addPagination = () => {
   let totalPages = Math.ceil(data.length / studentItems.studentsPerPage);
   linkList.innerHTML = "";
 
@@ -82,10 +86,40 @@ const showButtons = () => {
     button.addEventListener("click", function () {
       showPage(x + 1);
     });
+    x + 1 === studentItems.currentPage
+      ? button.classList.add("active")
+      : button.classList.remove("active");
+    // if (x + 1 === studentItems.currentPage) {
+    //   button.classList.add("active");
+    // }
+
     li.appendChild(button);
     linkList.appendChild(li);
   }
 };
+
+const searchStudents = () => {
+  search.textContent = "";
+  let txtValue;
+  let h3 = document.querySelectorAll("h3");
+  let filter = search.value.toUpperCase();
+  const studentLi = document.querySelectorAll(".cf");
+
+  for (let x = 0; x < data.length; x++) {
+    if (data) {
+      txtValue = h3[x].textContent;
+      if ((txtValue = txtValue.toUpperCase().indexOf(filter) > -1)) {
+        studentLi[x].style.display = "";
+        console.log(studentLi[x]);
+      } else {
+        studentLi[x].style.display = "none";
+      }
+    }
+  }
+};
+
+search.addEventListener("keyup", searchStudents);
+studentSearch.addEventListener("click", searchStudents);
 
 // Call functions
 
