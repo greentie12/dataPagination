@@ -67,15 +67,15 @@ const showPage = (list, page) => {
     studentList.appendChild(li);
   }
 
-  addPagination();
+  addPagination(list);
 };
 
 /*
 Create the `addPagination` function
 This function will create and insert/append the elements needed for the pagination buttons
 */
-const addPagination = () => {
-  let totalPages = Math.ceil(data.length / studentItems.studentsPerPage);
+const addPagination = (list) => {
+  let totalPages = Math.ceil(list.length / studentItems.studentsPerPage);
   linkList.innerHTML = "";
 
   for (let x = 0; x < totalPages; x++) {
@@ -84,7 +84,7 @@ const addPagination = () => {
     button.type = "button";
     button.textContent = x + 1;
     button.addEventListener("click", function () {
-      showPage(data, x + 1);
+      showPage(list, x + 1);
     });
     x + 1 === studentItems.currentPage
       ? button.classList.add("active")
@@ -95,22 +95,31 @@ const addPagination = () => {
   }
 };
 
+const noResults = () => {
+  let h3 = document.createElement("h3");
+  h3.textContent = "No results";
+
+  studentList.appendChild(h3);
+};
+
 // search function
 const searchStudents = () => {
   let txtValue;
   let h3 = document.querySelectorAll("h3");
   let filter = search.value.toUpperCase();
-  const studentLi = document.querySelectorAll(".cf");
+  let studentLi = document.querySelectorAll(".cf");
+
+  let searchArray = [];
 
   for (let x = 0; x < data.length; x++) {
-    if (data) {
-      txtValue = h3[x].textContent;
-      if ((txtValue = txtValue.toUpperCase().indexOf(filter) > -1)) {
-        studentLi[x].style.display = "";
-        console.log(studentLi[x]);
-      } else {
-        studentLi[x].style.display = "none";
-      }
+    txtValue = `${data[x].name.first} ${data[x].name.last}`;
+    if ((txtValue = txtValue.toUpperCase().indexOf(filter) > -1)) {
+      searchArray.push(data[x]);
+    }
+    showPage(searchArray, studentItems.currentPage);
+
+    if (!txtValue) {
+      noResults();
     }
   }
 };
