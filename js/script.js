@@ -7,13 +7,12 @@ const studentItems = {
   currentPage: 1,
 };
 
-const studentSearch = document.querySelector(".student-search");
-const searchSpan = document.querySelector(".student-search span");
-const search = document.querySelector("#search");
+// DOM variables
 const header = document.querySelector(".header");
 const studentList = document.querySelector(".student-list");
 const linkList = document.querySelector(".link-list");
 
+//showpage function which updates the page with the array provided
 const showPage = (list, page) => {
   studentItems.currentPage = page;
   studentList.innerHTML = "";
@@ -70,10 +69,7 @@ const showPage = (list, page) => {
   addPagination(list);
 };
 
-/*
-Create the `addPagination` function
-This function will create and insert/append the elements needed for the pagination buttons
-*/
+//function to update the pagination buttons
 const addPagination = (list) => {
   let totalPages = Math.ceil(list.length / studentItems.studentsPerPage);
   linkList.innerHTML = "";
@@ -86,6 +82,10 @@ const addPagination = (list) => {
     button.addEventListener("click", function () {
       showPage(list, x + 1);
     });
+    /* 
+    ternary operator checking to see if x+1 is equal to the currentPage
+    if true -> add the .active class, false -> remove .active
+    */
     x + 1 === studentItems.currentPage
       ? button.classList.add("active")
       : button.classList.remove("active");
@@ -95,19 +95,53 @@ const addPagination = (list) => {
   }
 };
 
+// clear student-list ul and display "No Results"
 const noResults = () => {
+  studentList.innerHTML = "";
   let h3 = document.createElement("h3");
   h3.textContent = "No results";
-
   studentList.appendChild(h3);
+};
+
+// function to dybnamically create the label/input element
+const createInput = () => {
+  let label = document.createElement("label");
+  label.setAttribute("for", "search");
+  label.classList.add("student-search");
+
+  let span = document.createElement("span");
+  span.textContent = "Search by name";
+
+  let input = document.createElement("input");
+  input.id = "search";
+  input.setAttribute("placeholder", "Search by name...");
+
+  let button = document.createElement("button");
+  button.setAttribute("type", "button");
+
+  let img = document.createElement("img");
+  img.src = "img/icn-search.svg";
+  img.setAttribute("alt", "Search icon");
+
+  button.appendChild(img);
+  label.appendChild(span);
+  label.appendChild(input);
+  label.appendChild(button);
+
+  header.appendChild(label);
+
+  const studentSearch = document.querySelector(".student-search");
+  const search = document.querySelector("#search");
+
+  //event listeners on input & button
+  search.addEventListener("keyup", searchStudents);
+  studentSearch.addEventListener("click", searchStudents);
 };
 
 // search function
 const searchStudents = () => {
   let txtValue;
-  let h3 = document.querySelectorAll("h3");
   let filter = search.value.toUpperCase();
-  let studentLi = document.querySelectorAll(".cf");
 
   let searchArray = [];
 
@@ -117,16 +151,13 @@ const searchStudents = () => {
       searchArray.push(data[x]);
     }
     showPage(searchArray, studentItems.currentPage);
-
-    if (!txtValue) {
-      noResults();
-    }
+  }
+  // if searchArray is empty run noResults()
+  if (searchArray.length < 1) {
+    noResults();
   }
 };
 
-search.addEventListener("keyup", searchStudents);
-studentSearch.addEventListener("click", searchStudents);
-
 // Call functions
-
+createInput();
 showPage(data, studentItems.currentPage);
