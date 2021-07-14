@@ -86,9 +86,15 @@ const addPagination = (list) => {
     ternary operator checking to see if x+1 is equal to the currentPage
     if true -> add the .active class, false -> remove .active
     */
-    x + 1 === studentItems.currentPage
-      ? button.classList.add("active")
-      : button.classList.remove("active");
+    if (x + 1 === studentItems.currentPage) {
+      button.classList.add("active");
+    } else {
+      button.classList.remove("active");
+    }
+
+    // x + 1 === studentItems.currentPage
+    //   ? button.classList.add("active")
+    //   : button.classList.remove("active");
 
     li.appendChild(button);
     linkList.appendChild(li);
